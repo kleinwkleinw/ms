@@ -12,6 +12,6 @@ public class UserServiceApplication {
 	
 	public static void main(String[] args) {
 		SpringApplication.run(UserServiceApplication.class, args);
-		logger.info("Started user service, v1.0");
+		logger.info("Started user service, v1.1");
 	}
 }

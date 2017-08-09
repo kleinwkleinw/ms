@@ -2,8 +2,9 @@ package de.wk.userservice;
 
 import java.util.List;
 
-public class UserData {
+public class User {
 
+	private String login;
 	private String firstName;
 	private String lastName;
 	
@@ -26,6 +27,25 @@ public class UserData {
 	}
 	public void setNumbers(List<String> numbers) {
 		this.numbers = numbers;
+	}
+	
+	public String getLogin() {
+		return login;
+	}
+	public void setLogin(String login) {
+		this.login = login;
+	}
+	@Override
+	public String toString() {
+		return new StringBuilder ()
+			.append("Login:")
+			.append(login)
+			.append("Vorname:")
+			.append(firstName)
+			.append(",")
+			.append("Lastname:")
+			.append(lastName)
+			.toString();
 	}
 	
 }

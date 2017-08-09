@@ -9,6 +9,7 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import de.wk.userservice.dao.RedisDao;
 import redis.clients.jedis.JedisPoolConfig;
 
 @Configuration
@@ -16,7 +17,7 @@ public class RedisConfig {
 
 	static private Logger logger = LoggerFactory.getLogger(RedisConfig.class);
 	
-	@Value("${redis.hostname:192.168.89.38}")
+	@Value("${redis.hostname:localhost}")
 	private String hostName;
 	@Value("${redis.portnumber:6379}")
 	private int portNumber;
@@ -28,9 +29,8 @@ public class RedisConfig {
 	@Value("${jedis.maxIdle:16}")
 	private int maxIdleConnections;
 	
-	@Bean (name = "jedisConnectionFactory")
+	@Bean
 	JedisConnectionFactory jedisConnectionFactory() {
-		logger.info("Setting up jedis connection factory.");
 		JedisPoolConfig jpc = new JedisPoolConfig();
 		jpc.setMaxTotal(maxTotalConnections);
 		jpc.setMinIdle(minIdleConnections);
@@ -48,17 +48,24 @@ public class RedisConfig {
 		return jcf;
 	}
 	
-	@Bean (name = "redisTemplate")
-	public StringRedisTemplate redisTemplate() {
+	@Bean
+	StringRedisTemplate redisTemplate() {
 		StringRedisTemplate template = new StringRedisTemplate();
 		template.setConnectionFactory(jedisConnectionFactory());
 		template.setDefaultSerializer(stringRedisSerializer());
 		return template;
 	}
 	
-	@Bean (name = "stringRedisSerializer")
+	@Bean
 	StringRedisSerializer stringRedisSerializer() {
 		return new StringRedisSerializer();
+	}
+
+	@Bean
+	public RedisDao redisDao () {
+		RedisDao redisDao = new RedisDao ();
+		redisDao.setStringRedisTemplate(redisTemplate());
+		return redisDao;
 	}
 	
 }
