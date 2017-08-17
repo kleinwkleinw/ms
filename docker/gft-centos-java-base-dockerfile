@@ -1,0 +1,21 @@
+FROM centos:7
+
+# Installation os
+RUN yum --disableplugin=fastestmirror -y upgrade
+RUN yum --disableplugin=fastestmirror -y install wget
+RUN yum --disableplugin=fastestmirror -y install net-tools
+RUN yum --disableplugin=fastestmirror -y install telnet
+RUN yum --disableplugin=fastestmirror -y install vim
+
+# Get jdk 1.8. Include cookie to bypass securiy question.
+RUN  wget -c --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm -O /tmp/jdk-8-linux-x64.rpm
+
+# Install via yum
+RUN yum -y install /tmp/jdk-8-linux-x64.rpm
+
+# Install java via alternatives
+RUN alternatives --install /usr/bin/java java /usr/java/latest/bin/java 1
+RUN alternatives --install /usr/bin/javaws javaws /usr/java/latest/bin/javaws 1
+RUN alternatives --install /usr/bin/javac javac /usr/java/latest/bin/javac 1
+
+
